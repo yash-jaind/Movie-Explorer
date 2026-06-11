@@ -25,11 +25,11 @@ CineSearch is a responsive movie discovery web application built using JavaScrip
 
 ### Popular Movies
 
-![Popular Movies](screenshots/popular-movies.png)
+![Popular Movies](popular-movies.png)
 
 ### Top Rated Movies
 
-![Top Rated Movies](screenshots/top-rated-movies.png)
+![Top Rated Movies](top-rated-movies.png)
 
 ## Learning Outcomes
 
