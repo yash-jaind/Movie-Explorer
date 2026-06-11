@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CineSearch — Movie Explorer</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<!-- <style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#0A0A0B;
+  --surface:#111113;
+  --card:#18181C;
+  --border:#2A2A32;
+  --text:#F0EEE8;
+  --muted:#6B6B7A;
+  --accent:#FF3C3C;
+  --accent2:#FF8C00;
+  --gold:#FFD700;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--accent);border-radius:4px;}
+
+/* HEADER */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(10,10,11,0.92);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  padding:0 32px;height:64px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.logo{
+  font-family:'Bebas Neue',cursive;
+  font-size:28px;letter-spacing:2px;
+  color:var(--text);
+}
+.logo span{color:var(--accent);}
+
+/* SEARCH */
+.search-wrap{
+  display:flex;align-items:center;gap:12px;
+  flex:1;max-width:500px;margin:0 32px;
+}
+.search-box{
+  position:relative;flex:1;
+}
+.search-box input{
+  width:100%;background:var(--card);
+  border:1px solid var(--border);border-radius:8px;
+  padding:10px 16px 10px 42px;
+  color:var(--text);font-family:'DM Sans',sans-serif;
+  font-size:14px;outline:none;transition:border-color 0.2s;
+}
+.search-box input:focus{border-color:var(--accent);}
+.search-box input::placeholder{color:var(--muted);}
+.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:16px;}
+.search-btn{
+  background:var(--accent);color:#fff;border:none;
+  padding:10px 20px;border-radius:8px;
+  font-family:'DM Sans',sans-serif;font-weight:600;font-size:14px;
+  cursor:pointer;transition:all 0.2s;white-space:nowrap;
+}
+.search-btn:hover{background:#cc2f2f;transform:translateY(-1px);}
+
+/* FILTERS */
+.filters{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.filter-btn{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:20px;padding:6px 14px;
+  color:var(--muted);font-family:'DM Mono',monospace;
+  font-size:11px;text-transform:uppercase;letter-spacing:0.06em;
+  cursor:pointer;transition:all 0.15s;
+}
+.filter-btn:hover,.filter-btn.active{
+  border-color:var(--accent);color:var(--accent);
+  background:rgba(255,60,60,0.08);
+}
+
+/* HERO */
+.hero{
+  margin-top:64px;
+  padding:60px 32px 40px;
+  text-align:center;
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;
+  top:-100px;left:50%;transform:translateX(-50%);
+  width:600px;height:400px;
+  background:radial-gradient(ellipse,rgba(255,60,60,0.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-title{
+  font-family:'Bebas Neue',cursive;
+  font-size:clamp(48px,8vw,96px);
+  line-height:0.9;letter-spacing:2px;
+  color:var(--text);margin-bottom:16px;
+}
+.hero-title span{
+  color:var(--accent);
+  -webkit-text-stroke:1px var(--accent);
+}
+.hero-sub{
+  color:var(--muted);font-size:16px;margin-bottom:32px;
+}
+
+/* MAIN CONTENT */
+.main{padding:0 32px 60px;}
+
+/* SECTION */
+.section-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:24px;padding-bottom:12px;
+  border-bottom:1px solid var(--border);
+}
+.section-title{
+  font-family:'Bebas Neue',cursive;
+  font-size:28px;letter-spacing:1px;color:var(--text);
+  display:flex;align-items:center;gap:10px;
+}
+.section-count{
+  font-family:'DM Mono',monospace;font-size:12px;
+  color:var(--muted);background:var(--card);
+  border:1px solid var(--border);padding:3px 10px;border-radius:20px;
+}
+
+/* GRID */
+.movies-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:20px;
+}
+
+/* CARD */
+.movie-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;overflow:hidden;cursor:pointer;
+  transition:all 0.25s;position:relative;
+}
+.movie-card:hover{
+  transform:translateY(-4px);
+  border-color:var(--accent);
+  box-shadow:0 12px 40px rgba(255,60,60,0.15);
+}
+.card-poster{
+  width:100%;aspect-ratio:2/3;
+  object-fit:cover;display:block;
+  background:var(--surface);
+}
+.card-no-poster{
+  width:100%;aspect-ratio:2/3;
+  background:var(--surface);
+  display:flex;align-items:center;justify-content:center;
+  font-size:48px;color:var(--border);
+}
+.card-body{padding:14px;}
+.card-title{
+  font-weight:600;font-size:14px;
+  color:var(--text);margin-bottom:6px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.card-meta{
+  display:flex;align-items:center;justify-content:space-between;
+}
+.card-year{
+  font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);
+}
+.card-rating{
+  display:flex;align-items:center;gap:4px;
+  font-family:'DM Mono',monospace;font-size:12px;font-weight:500;
+  color:var(--gold);
+}
+.card-genre{
+  margin-top:8px;
+  font-family:'DM Mono',monospace;font-size:10px;
+  color:var(--accent);text-transform:uppercase;letter-spacing:0.06em;
+}
+.card-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,0.9) 0%,transparent 50%);
+  opacity:0;transition:opacity 0.25s;
+  display:flex;align-items:flex-end;padding:16px;
+}
+.movie-card:hover .card-overlay{opacity:1;}
+.overlay-btn{
+  background:var(--accent);color:#fff;border:none;
+  padding:8px 16px;border-radius:6px;
+  font-family:'DM Sans',sans-serif;font-weight:600;font-size:13px;
+  cursor:pointer;width:100%;
+}
+
+/* MODAL */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.85);
+  backdrop-filter:blur(8px);z-index:200;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity 0.3s;
+  padding:20px;
+}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:16px;max-width:800px;width:100%;
+  max-height:90vh;overflow-y:auto;
+  transform:translateY(20px);transition:transform 0.3s;
+}
+.modal-overlay.open .modal{transform:translateY(0);}
+.modal-hero{
+  position:relative;height:300px;overflow:hidden;border-radius:16px 16px 0 0;
+}
+.modal-backdrop{
+  width:100%;height:100%;object-fit:cover;
+  filter:brightness(0.4);
+}
+.modal-hero-content{
+  position:absolute;inset:0;
+  display:flex;align-items:flex-end;padding:24px;
+  background:linear-gradient(to top,var(--card) 0%,transparent 60%);
+}
+.modal-title-big{
+  font-family:'Bebas Neue',cursive;
+  font-size:40px;letter-spacing:1px;color:var(--text);
+  line-height:1;
+}
+.modal-body{padding:24px;}
+.modal-close{
+  position:absolute;top:16px;right:16px;
+  background:rgba(0,0,0,0.6);border:1px solid var(--border);
+  border-radius:50%;width:36px;height:36px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--text);font-size:16px;
+  transition:all 0.2s;z-index:10;
+}
+.modal-close:hover{background:var(--accent);border-color:var(--accent);}
+.modal-meta-row{
+  display:flex;align-items:center;gap:16px;
+  flex-wrap:wrap;margin-bottom:16px;
+}
+.modal-badge{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:6px;padding:4px 12px;
+  font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);
+  text-transform:uppercase;letter-spacing:0.06em;
+}
+.modal-badge.accent{border-color:var(--accent);color:var(--accent);}
+.modal-badge.gold{border-color:var(--gold);color:var(--gold);}
+.modal-overview{
+  color:var(--muted);line-height:1.8;font-size:14px;margin-bottom:20px;
+}
+.modal-section-title{
+  font-family:'Bebas Neue',cursive;font-size:20px;
+  letter-spacing:1px;color:var(--text);margin-bottom:12px;
+}
+
+/* PAGINATION */
+.pagination{
+  display:flex;align-items:center;justify-content:center;
+  gap:8px;margin-top:40px;
+}
+.page-btn{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:8px;padding:10px 16px;
+  color:var(--muted);font-family:'DM Mono',monospace;font-size:13px;
+  cursor:pointer;transition:all 0.15s;
+}
+.page-btn:hover,.page-btn.active{
+  border-color:var(--accent);color:var(--accent);
+  background:rgba(255,60,60,0.08);
+}
+.page-btn:disabled{opacity:0.3;cursor:not-allowed;}
+
+/* LOADING */
+.loading{
+  display:flex;align-items:center;justify-content:center;
+  padding:80px;flex-direction:column;gap:16px;
+}
+.spinner{
+  width:40px;height:40px;
+  border:3px solid var(--border);
+  border-top-color:var(--accent);
+  border-radius:50%;
+  animation:spin 0.8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading-text{
+  font-family:'DM Mono',monospace;font-size:12px;
+  color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;
+}
+
+/* EMPTY */
+.empty{
+  text-align:center;padding:80px;color:var(--muted);
+}
+.empty-icon{font-size:64px;margin-bottom:16px;opacity:0.3;}
+.empty-text{font-size:16px;}
+
+/* TOAST */
+.toast-container{
+  position:fixed;bottom:24px;right:24px;z-index:300;
+  display:flex;flex-direction:column;gap:8px;
+}
+.toast{
+  background:var(--card);border:1px solid var(--accent);
+  border-radius:8px;padding:12px 18px;
+  font-size:13px;color:var(--text);
+  animation:toastIn 0.3s ease;
+}
+@keyframes toastIn{from{opacity:0;transform:translateX(20px);}to{opacity:1;transform:translateX(0);}}
+
+/* ANIM */
+.movie-card{animation:fadeUp 0.4s ease forwards;opacity:0;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+
+@media(max-width:768px){
+  header{padding:0 16px;}
+  .search-wrap{margin:0 12px;}
+  .hero{padding:40px 16px 24px;}
+  .main{padding:0 16px 40px;}
+  .movies-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;}
+}
+</style> -->
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">CINE<span>SEARCH</span></div>
+  <div class="search-wrap">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="search-input" placeholder="Search movies..." onkeydown="handleKey(event)">
+    </div>
+    <button class="search-btn" onclick="searchMovies()">Search</button>
+  </div>
+  <div class="filters">
+    <button class="filter-btn active" onclick="setCategory('popular',this)">Popular</button>
+    <button class="filter-btn" onclick="setCategory('top_rated',this)">Top Rated</button>
+    <button class="filter-btn" onclick="setCategory('now_playing',this)">Now Playing</button>
+    <button class="filter-btn" onclick="setCategory('upcoming',this)">Upcoming</button>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <h1 class="hero-title">DISCOVER<br><span>CINEMA</span></h1>
+  <p class="hero-sub">Explore thousands of movies — search, discover, explore</p>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="section-header">
+    <div class="section-title">
+      <span id="section-label">🔥 Popular Movies</span>
+      <span class="section-count" id="result-count">Loading...</span>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <select id="sort-select" onchange="sortMovies()" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;outline:none;cursor:pointer;text-transform:uppercase;">
+        <option value="default">Default</option>
+        <option value="rating-high">Rating High</option>
+        <option value="rating-low">Rating Low</option>
+        <option value="year-new">Year Newest</option>
+        <option value="year-old">Year Oldest</option>
+        <option value="title-az">Title A-Z</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="movies-grid" class="movies-grid"></div>
+  <div id="pagination" class="pagination"></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="handleModalClick(event)">
+  <div class="modal" id="modal">
+    <div class="modal-hero">
+      <img id="modal-backdrop" class="modal-backdrop" src="" alt="">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-hero-content">
+        <div>
+          <div class="modal-title-big" id="modal-title"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-meta-row" id="modal-meta"></div>
+      <p class="modal-overview" id="modal-overview"></p>
+      <div id="modal-extra"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-container" id="toast-container"></div>
+
+</body>
+<script src=" script.js"></script>
+</html>
