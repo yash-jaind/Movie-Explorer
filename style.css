@@ -1,0 +1,137 @@
+/* 1. ROOT AND RESET */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #0A0A0B;
+  --surface: #111113;
+  --card: #18181C;
+  --border: #2A2A32;
+  --text: #F0EEE8;
+  --muted: #6B6B7A;
+  --accent: #FF3C3C;
+  --accent2: #FF8C00;
+  --gold: #FFD700;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 15px;
+}
+
+/* 2. HEADER AND ALIGNMENT */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10, 10, 11, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 32px;
+  height: 70px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 24px;
+}
+
+.logo { font-family: 'Bebas Neue', cursive; font-size: 28px; letter-spacing: 2px; }
+.logo span { color: var(--accent); }
+
+/* 3. COMPONENTS (Search, Buttons, Inputs) */
+.search-wrap { display: flex; align-items: center; gap: 8px; max-width: 500px; }
+
+.search-box, .search-btn, .filter-btn, #sort-select {
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+}
+
+.search-box input {
+  width: 100%;
+  height: 100%;
+  padding: 0 16px 0 42px;
+  background: transparent;
+  border: none;
+  color: var(--text);
+}
+
+.search-btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 0 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.filter-btn {
+  padding: 0 16px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.filter-btn:hover, .filter-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+#sort-select { padding: 0 32px 0 16px; cursor: pointer; outline: none; }
+
+/* 4. LAYOUT */
+.hero { padding: 40px 32px 30px; text-align: center; }
+.main { padding: 0 32px 60px; margin-top: -20px; }
+
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.movie-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: 0.3s;
+}
+
+/* 5. MODAL AND UTILITIES */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(8px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+
+/* 6. ANIMATIONS */
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+/* 7. RESPONSIVE */
+@media(max-width: 768px) {
+  header { grid-template-columns: 1fr; height: auto; padding: 16px; }
+  .movies-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+}
